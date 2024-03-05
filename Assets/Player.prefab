@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 4348486188877593936}
   - component: {fileID: 4348486188877593966}
   - component: {fileID: 4348486188877593964}
-  - component: {fileID: 4739633522364153537}
+  - component: {fileID: 4565662163040268599}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -122,6 +122,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  moveSpeed: 5
 --- !u!70 &4348486188877593966
 CapsuleCollider2D:
   m_ObjectHideFlags: 0
@@ -154,7 +155,7 @@ CapsuleCollider2D:
   m_Offset: {x: 0, y: -0.87}
   m_Size: {x: 0.51, y: 0.2}
   m_Direction: 1
---- !u!50 &4739633522364153537
+--- !u!50 &4565662163040268599
 Rigidbody2D:
   serializedVersion: 4
   m_ObjectHideFlags: 0
@@ -168,7 +169,7 @@ Rigidbody2D:
   m_UseAutoMass: 0
   m_Mass: 1
   m_LinearDrag: 0
-  m_AngularDrag: 0.05
+  m_AngularDrag: 0
   m_GravityScale: 0
   m_Material: {fileID: 0}
   m_Interpolate: 0

@@ -9,7 +9,7 @@ public class BuildLinuxServer
     public static void BuildServer()
     {
         BuildPlayerOptions buildPlayerOptions = new BuildPlayerOptions();
-        buildPlayerOptions.scenes = new[] { "Assets/Scenes/Preloader.unity" };
+        buildPlayerOptions.scenes = new[] { "Assets/Scenes/Preloader.unity", "Assets/Scenes/SampleScene.unity" };
         buildPlayerOptions.locationPathName = "Builds/Linux/Server/Server.x86_64";
         buildPlayerOptions.target = BuildTarget.StandaloneLinux64;
         buildPlayerOptions.subtarget = (int)(StandaloneBuildSubtarget.Server);
