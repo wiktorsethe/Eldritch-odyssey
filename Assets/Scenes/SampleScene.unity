@@ -1105,7 +1105,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1132125677
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1260,7 +1260,7 @@ MonoBehaviour:
   m_DisconnectTimeoutMS: 30000
   ConnectionData:
     Address: 54.38.52.204
-    Port: 7777
+    Port: 59735
     ServerListenAddress: 127.0.0.1
   DebugSimulator:
     PacketDelayMS: 0
@@ -1330,6 +1330,7 @@ GameObject:
   - component: {fileID: 1231418114}
   - component: {fileID: 1231418113}
   - component: {fileID: 1231418112}
+  - component: {fileID: 1231418116}
   - component: {fileID: 1231418115}
   m_Layer: 5
   m_Name: Canvas
@@ -1434,9 +1435,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 33dfded05b336f149b604f1d5d50b98e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  hostButton: {fileID: 1363078599}
-  serverButton: {fileID: 1132125680}
-  clientButton: {fileID: 2065276988}
+--- !u!114 &1231418116
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1231418110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d5a57f767e5e46a458fc5d3c628d0cbb, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  GlobalObjectIdHash: 4011781785
+  AlwaysReplicateAsRoot: 0
+  SynchronizeTransform: 1
+  ActiveSceneSynchronization: 0
+  SceneMigrationSynchronization: 1
+  SpawnWithObservers: 1
+  DontDestroyWithOwner: 0
+  AutoObjectParentSync: 1
 --- !u!1 &1363078595
 GameObject:
   m_ObjectHideFlags: 0
@@ -1455,7 +1473,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1363078596
 RectTransform:
   m_ObjectHideFlags: 0
@@ -2471,7 +2489,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!114 &2065276988
 MonoBehaviour:
   m_ObjectHideFlags: 0

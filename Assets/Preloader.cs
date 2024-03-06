@@ -1,36 +1,49 @@
-using System.Collections;
-using System.Collections.Generic;
-using System;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using Unity.Netcode;
-using UnityEngine.UI;
-public class Preloader : MonoBehaviour
+using System.Collections;
+
+public class Preloader : NetworkBehaviour
 {
-    [SerializeField] private Button hostButton;
-    [SerializeField] private Button serverButton;
-    [SerializeField] private Button clientButton;
+    void Awake()
+    {
 
-    private void Start()
-    {
-        Application.targetFrameRate = 60;
+        string[] args = System.Environment.GetCommandLineArgs();
 
-        if(Application.platform == RuntimePlatform.LinuxServer) OnServerClick();
-        else OnClientClick();
+        for (int i = 0; i < args.Length; i++)
+        {
+            if (args[i] == "-s")
+            {
+                Debug.Log("----------------Running as server-------------------");
+
+                NetworkManager.Singleton.StartServer();
+                NetworkManager.Singleton.OnClientConnectedCallback += ClientConnectMessage;
+
+                StartCoroutine(PingClients());
+            }
+        }
     }
-    public void OnClientClick()
+
+    public void ClientConnectMessage(ulong connectionID)
     {
-        NetworkManager.Singleton.StartClient();
-        gameObject.SetActive(false);
+        Debug.Log("---------" + connectionID + " has connected---------");
     }
-    public void OnServerClick()
+
+    public IEnumerator PingClients()
     {
-        NetworkManager.Singleton.StartServer();
-        gameObject.SetActive(false);
+        yield return new WaitForSeconds(5f);
+
+        while (NetworkManager.Singleton.IsServer)
+        {
+            yield return new WaitForSeconds(5f);
+            Debug.Log("Sending ping...");
+            PingClientRpc();
+        }
     }
-    public void OnHostClick()
+
+
+    [ClientRpc]
+    public void PingClientRpc()
     {
-        NetworkManager.Singleton.StartHost();
-        gameObject.SetActive(false);
+        Debug.Log("Got ping from server!");
     }
 }
