@@ -1,8 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerMovement : MonoBehaviour
+using Mirror;
+public class PlayerMovement : NetworkBehaviour
 {
     [SerializeField] private float speed;
     private Vector2 direction;
@@ -10,11 +10,14 @@ public class PlayerMovement : MonoBehaviour
 
     private void Awake()
     {
+        DontDestroyOnLoad(gameObject);
         rb = GetComponent<Rigidbody2D>();
     }
 
     private void FixedUpdate()
     {
+        if (!isLocalPlayer) return;
+
         direction = new Vector2(Input.GetAxis("Horizontal"), Input.GetAxis("Vertical")).normalized;
         rb.velocity = direction * speed;
 
