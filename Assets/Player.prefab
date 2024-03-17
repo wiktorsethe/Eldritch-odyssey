@@ -15,9 +15,10 @@ GameObject:
   - component: {fileID: 4565662163040268599}
   - component: {fileID: 1271405644841493053}
   - component: {fileID: 1137290896755844928}
+  - component: {fileID: 2126339152726949182}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,6 +102,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 2d6984f8b758cac46a03036b8d1f3921, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
   speed: 5
 --- !u!70 &4348486188877593964
 CapsuleCollider2D:
@@ -191,3 +195,17 @@ MonoBehaviour:
   positionSensitivity: 0.01
   rotationSensitivity: 0.01
   scaleSensitivity: 0.01
+--- !u!114 &2126339152726949182
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348486188877593939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5543760ed140a674cb8b407033fe748c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  smoothSpeed: 0.125
+  offset: {x: 0, y: 0, z: -10}
