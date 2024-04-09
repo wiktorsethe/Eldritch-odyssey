@@ -4,7 +4,7 @@ using Mirror;
 using UnityEngine;
 using UnityEngine.Networking;
 using UnityEngine.UI;
-
+using TMPro;
 [System.Serializable]
  public class User
 {
@@ -17,8 +17,8 @@ public class LoginPanel : MonoBehaviour
     private string serverUrl = "localhost:9999/getdata";
     [SerializeField] private Button loginButton;
     [SerializeField] private GameObject canvas;
-    [SerializeField] private InputField loginField;
-    [SerializeField] private InputField passwordField;
+    [SerializeField] private TMP_InputField loginField;
+    [SerializeField] private TMP_InputField passwordField;
     private bool succesfullLogin = false;
     private User user;
     private GameObject[] player;
