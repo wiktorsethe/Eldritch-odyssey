@@ -377,6 +377,7 @@ MonoBehaviour:
   syncDirection: 0
   syncMode: 0
   syncInterval: 0
+  user: {fileID: 11400000, guid: 0c4bc9c08d0737b49b8702ada7b59a44, type: 2}
   chatText: {fileID: 3748173461881661785}
   inputField: {fileID: 2567511794741431377}
   canvas: {fileID: 2809486892837200728}

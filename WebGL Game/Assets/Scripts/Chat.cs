@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Networking;
 using Mirror;
 using TMPro;
 using System;
 public class Chat : NetworkBehaviour
 {
+    [SerializeField] private User user;
     [SerializeField] private TMP_Text chatText;
     [SerializeField] private TMP_InputField inputField;
     [SerializeField] private GameObject canvas;
@@ -14,15 +16,24 @@ public class Chat : NetworkBehaviour
 
     private bool isPlayerMovementEnabled = true;
     [SerializeField] private PlayerMovement playerMovement;
+
+    private string username;
+    private void Awake()
+    {
+        StartCoroutine(GetUsername());
+    }
     public override void OnStartAuthority()
     {
         canvas.SetActive(true);
-
         inputField.onValueChanged.AddListener(OnInputValueChanged);
         inputField.onDeselect.AddListener(OnDeselect);
         OnMessage += HandleNewMessage;
     }
-
+    IEnumerator GetUsername()
+    {
+        username = user.username;
+        yield return new WaitForEndOfFrame();
+    }
     [ClientCallback]
     private void OnDestroy()
     {
@@ -52,7 +63,7 @@ public class Chat : NetworkBehaviour
     [Command]
     private void CmdSendMessage(string message)
     {
-        RpcHandleMessage($"[{connectionToClient.connectionId}]: {message}");
+        RpcHandleMessage($"[{username}]: {message}"); //{connectionToClient.connectionId}
     }
 
     [ClientRpc]
