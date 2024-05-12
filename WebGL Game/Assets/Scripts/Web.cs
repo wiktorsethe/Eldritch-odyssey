@@ -3,16 +3,20 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using UnityEngine.Networking;
+using Mirror;
 
-public class Web : MonoBehaviour
+public class Web : NetworkBehaviour
 {
-    [SerializeField] private User user;
-    private void Start()
+    [SyncVar]
+    public string playerName;
+
+    public override void OnStartServer()
     {
-        //StartCoroutine(Login("wiktor", "wiktor"));
+        playerName = (string)connectionToClient.authenticationData;
     }
-    public void SetUser(string username)
+
+    public override void OnStartLocalPlayer()
     {
-        user.username = username;
+        ChatUI.localPlayerName = playerName;
     }
 }
