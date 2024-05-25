@@ -300,10 +300,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Network
       objectReference: {fileID: 0}
-    - target: {fileID: 6953302202317801929, guid: 90aff014278614bcb832cbf605245e51, type: 3}
-      propertyPath: sceneId
-      value: 3837445359
-      objectReference: {fileID: 0}
     - target: {fileID: 8026102554959856444, guid: 90aff014278614bcb832cbf605245e51, type: 3}
       propertyPath: m_RootOrder
       value: 1
@@ -348,6 +344,5 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    m_RemovedComponents:
-    - {fileID: 6953302202739513354, guid: 90aff014278614bcb832cbf605245e51, type: 3}
+    m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 90aff014278614bcb832cbf605245e51, type: 3}

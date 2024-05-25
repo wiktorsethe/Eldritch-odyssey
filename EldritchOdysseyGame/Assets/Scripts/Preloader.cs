@@ -6,7 +6,7 @@ public class Preloader : MonoBehaviour
 {
     private void Start()
     {
-        if (Application.platform == RuntimePlatform.WebGLPlayer)
+        if (Application.platform != RuntimePlatform.LinuxServer)
         {
             NetworkManager.singleton.networkAddress = "54.38.52.204";
             NetworkManager.singleton.StartClient();
