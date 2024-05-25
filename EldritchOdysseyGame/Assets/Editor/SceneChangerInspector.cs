@@ -12,7 +12,7 @@ public class SceneChangerInspector : Editor
 
         SceneChanger script = (SceneChanger)target;
 
-        // Lista zawierajÄ…ca nazwy wszystkich scen w projekcie
+        // Lista zawieraj¹ca nazwy wszystkich scen w projekcie
         string[] sceneNames = new string[EditorBuildSettings.scenes.Length];
         for (int i = 0; i < EditorBuildSettings.scenes.Length; i++)
         {
@@ -22,15 +22,15 @@ public class SceneChangerInspector : Editor
         // Pobieranie indeksu obecnie wybranej sceny
         int selectedSceneIndex = System.Array.IndexOf(sceneNames, script.sceneName);
 
-        // WyÅ›wietlanie listy rozwijanej z nazwami scen
+        // Wyœwietlanie listy rozwijanej z nazwami scen
         int newSelectedSceneIndex = EditorGUILayout.Popup("Scenes", selectedSceneIndex, sceneNames);
 
-        // Aktualizacja wybranej nazwy sceny w skrypcie tylko wtedy, gdy wybÃ³r zostaÅ‚ zmieniony
-        if(newSelectedSceneIndex != selectedSceneIndex)
+        // Aktualizacja wybranej nazwy sceny w skrypcie tylko wtedy, gdy wybór zosta³ zmieniony
+        if (newSelectedSceneIndex != selectedSceneIndex)
         {
             selectedSceneIndex = newSelectedSceneIndex;
             script.sceneName = sceneNames[selectedSceneIndex];
-            // Powiadomienie Unity o zmianie, aby zapewniÄ‡ aktualizacjÄ™ inspektora
+            // Powiadomienie Unity o zmianie, aby zapewniæ aktualizacjê inspektora
             EditorUtility.SetDirty(target);
         }
     }
