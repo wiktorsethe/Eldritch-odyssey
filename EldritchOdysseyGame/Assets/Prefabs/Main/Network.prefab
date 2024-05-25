@@ -43,8 +43,8 @@ GameObject:
   - component: {fileID: 6953302202739513394}
   - component: {fileID: 6953302202739513397}
   - component: {fileID: 6953302202739513399}
-  - component: {fileID: 6953302202739513352}
   - component: {fileID: 6953302202739513353}
+  - component: {fileID: 4371150455880079937}
   m_Layer: 0
   m_Name: NetworkManager
   m_TagString: Untagged
@@ -88,7 +88,7 @@ MonoBehaviour:
   autoConnectClientBuild: 0
   offlineScene: 
   onlineScene: 
-  transport: {fileID: 6953302202739513352}
+  transport: {fileID: 4371150455880079937}
   networkAddress: localhost
   maxConnections: 100
   disconnectInactiveConnections: 0
@@ -127,36 +127,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   offsetX: 0
   offsetY: 0
---- !u!114 &6953302202739513352
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6953302202739513407}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0110f245bfcfc7d459681f7bd9ebc590, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  maxMessageSize: 16384
-  maxHandshakeSize: 3000
-  serverMaxMsgsPerTick: 10000
-  clientMaxMsgsPerTick: 1000
-  sendTimeout: 5000
-  receiveTimeout: 20000
-  noDelay: 1
-  sslEnabled: 0
-  sslProtocols: 240
-  sslCertJson: ./cert.json
-  port: 7777
-  batchSend: 1
-  waitBeforeSend: 1
-  clientUseWss: 0
-  clientWebsocketSettings:
-    ClientPortOption: 0
-    CustomClientPort: 27777
-  minimumLogLevel: 3
 --- !u!114 &6953302202739513353
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -169,3 +139,32 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7c3b7054817e63949907c03f2d3ddf11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &4371150455880079937
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6953302202739513407}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6b0fecffa3f624585964b0d0eb21b18e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  port: 7777
+  DualMode: 1
+  NoDelay: 1
+  Interval: 10
+  Timeout: 10000
+  RecvBufferSize: 7361536
+  SendBufferSize: 7361536
+  FastResend: 2
+  ReceiveWindowSize: 4096
+  SendWindowSize: 4096
+  MaxRetransmit: 40
+  MaximizeSocketBuffers: 1
+  ReliableMaxMessageSize: 297433
+  UnreliableMaxMessageSize: 1194
+  debugLog: 0
+  statisticsGUI: 0
+  statisticsLog: 0
