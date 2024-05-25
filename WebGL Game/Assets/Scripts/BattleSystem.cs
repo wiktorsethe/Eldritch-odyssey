@@ -15,151 +15,121 @@ public enum BattleState
 }
 public class BattleSystem : MonoBehaviour
 {
-    [SerializeField] private GameObject unitViewPrefab;
-    [SerializeField] private GameObject combatPanelPrefab;
-    [SerializeField] private GameObject combatButtonPrefab;
-    private GameObject _combatPanel;
-    private GameObject _unitView;
-    private BattleUnit _battleUnit;
     public BattleState battleState;
-    private bool _turnAction = false;
-    public static BattleSystem Instance { get; private set; }
-    private void Awake()
-    {
-        if (!Instance) Instance = this;
-        else Destroy(gameObject);
-    }
+    public bool turnAction = false;
+    public BattleUnit playerUnit; // Tymczasowo public, wywołuj jako parametr w SetupBattle()
+    public BattleUnit enemyUnit; // Tymczasowo public, wywołuj jako parametr w SetupBattle()
+    private BattleSystemHUD _battleSystemHUD;
+    private BattleAction _playerActionUsed;
+    
     private void Start()
     {
-            battleState = BattleState.START;
-            SetupBattle();
+        _battleSystemHUD = FindObjectOfType(typeof(BattleSystemHUD)) as BattleSystemHUD;
+        battleState = BattleState.START;
+        SetupBattle();
     }
+    
     private void SetupBattle()
     {
-            // Do dokończenia
-            battleState = BattleState.PLAYERTURN;
-            StartCoroutine(PlayerTurn());
+        // Do dokończenia
+        _battleSystemHUD.AppendMessage("The fight between " + playerUnit.unitName + " and " + enemyUnit.unitName);
+        battleState = BattleState.PLAYERTURN;
+        StartCoroutine(PlayerTurn());
     }
 
     private IEnumerator PlayerTurn()
     {
-        _turnAction = false;
-        Debug.LogWarning("<color=yellow>-----Tura Gracza-----</color>");
-        float elapsedTime = 0f;
-        while (!_turnAction && elapsedTime < 15f)
+        if (playerUnit.currentHealth <= 0)
         {
+            battleState = BattleState.LOST;
+            LostTurn();
             yield return null;
-            elapsedTime += Time.deltaTime;
         }
-
-        if (_turnAction)
+        else
         {
-            Debug.Log("<color=green>Tura udana!</color>");
+            turnAction = false;
+            Debug.Log("<color=yellow>----- Tura Gracza -----</color>");
+            float elapsedTime = 0f;
+            while (!turnAction && elapsedTime < 15f)
+            {
+                _battleSystemHUD.SetPlayerTurnTimer((int)elapsedTime);
+                yield return null;
+                elapsedTime += Time.deltaTime;
+            }
+
+            if (turnAction)
+            {
+                Debug.Log("<color=green>Tura udana!</color>");
+                
+                if (_playerActionUsed.type == BattleAction.TypeOfAction.ATTACK)
+                {
+                    _battleSystemHUD.AppendMessage(playerUnit.unitName + " used " + _playerActionUsed.actionName +
+                                                   " and takes: " + _playerActionUsed.attackAmount + " points of " +
+                                                   enemyUnit.unitName + " health.");
+                }
+                else if (_playerActionUsed.type == BattleAction.TypeOfAction.SUPPORT)
+                {
+                    _battleSystemHUD.AppendMessage(playerUnit.unitName + " used " + _playerActionUsed.actionName +
+                                                   " and receive: " + _playerActionUsed.healAmount + 
+                                                   " points of health.");
+                }
+                else if (_playerActionUsed.type == BattleAction.TypeOfAction.DEFEND)
+                {
+                    _battleSystemHUD.AppendMessage(playerUnit.unitName + " used " + _playerActionUsed.actionName +
+                                                   " and receive: " + _playerActionUsed.defensePower + 
+                                                   " points of shield.");
+                }
+                
+                battleState = BattleState.ENEMYTURN;
+                EnemyTurn();
+                yield break;
+            }
+        
+            yield return null;
+            Debug.LogWarning("<color=red>Tura zmarnowana!</color>");
             battleState = BattleState.ENEMYTURN;
             EnemyTurn();
-            yield break;
         }
-        
-        yield return null;
-        Debug.LogWarning("<color=red>Tura zmarnowana!</color");
-        battleState = BattleState.ENEMYTURN;
-        EnemyTurn();
     }
+    
+    public void SetPlayerTurn(BattleAction action)
+    {
+        turnAction = true;
+        _playerActionUsed = action;
+    }
+    
     private void EnemyTurn()
     {
-            Debug.LogWarning("<color=yellow>-----Tura Przeciwnika-----</color>");
+        if (enemyUnit.currentHealth <= 0)
+        {
+            battleState = BattleState.WON;
+            WinTurn();
+        }
+        else
+        {
+            Debug.Log("<color=yellow>----- Tura Przeciwnika -----</color>");
+            // DO ZROBIENIA ENEMY AI
+            playerUnit.currentHealth -= enemyUnit.actions[0].attackAmount;
+            _battleSystemHUD.AppendMessage(enemyUnit.unitName + " used " + enemyUnit.actions[0].actionName +
+                                           " and takes: " + enemyUnit.actions[0].attackAmount + " points of " +
+                                           playerUnit.unitName + " health.");
             battleState = BattleState.PLAYERTURN;
             StartCoroutine(PlayerTurn());
-    }
-    public void ShowUnitView()
-    {
-        if(!_unitView)
-        {
-            if (Camera.main != null)
-                _unitView = Instantiate(unitViewPrefab, 
-                (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition),
-                Quaternion.identity, 
-                transform);
-        }
-        else
-        {
-            _unitView.SetActive(true);
-            _unitView.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
         }
     }
-    public void HideUnitView()
+
+    private void LostTurn()
     {
-        _unitView.SetActive(false);
+        // Do dokończenia
+        Debug.LogWarning("<color=red>----- Walka Przegrana! -----</color>");
+
     }
-    public void ShowCombatPanel(Type unitType, BattleUnit battleUnit)
+
+    private void WinTurn()
     {
-        if(_unitView) _unitView.SetActive(false);
-        
-        if(!_combatPanel)
-        {
-            if (Camera.main != null)
-                _combatPanel = Instantiate(combatPanelPrefab,
-                (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition), 
-                Quaternion.identity, 
-                transform);
-        }
-        else
-        {
-                _combatPanel.SetActive(true);
-                _combatPanel.transform.position = (Vector2)Camera.main.ScreenToWorldPoint(Input.mousePosition);
-        }
-        
-        _battleUnit = battleUnit;
-        
-        if (unitType == Type.PLAYER)
-        {
-            // Do rozbudowy
-            AddButton("Heal", Heal);
-        }
-        else if (unitType == Type.ENEMY)
-        {
-            // Do rozbudowy
-            AddButton("Attack 1", Attack);
-            AddButton("Attack 2", Attack);
-        }
-    }
-    private void HideCombatPanel()
-    {
-        if (_combatPanel.activeSelf)
-        {
-            for (int i=0; i<_combatPanel.transform.childCount; i++)
-            {
-                    GameObject child = _combatPanel.transform.GetChild(i).gameObject;
-                    Destroy(child);
-            }
-            _combatPanel.SetActive(false);
-            _battleUnit.transform.GetComponent<Collider2D>().enabled = true;
-        }
-    }
-    private void AddButton(string desc, Action action)
-    {
-        GameObject combatButton = Instantiate(combatButtonPrefab, _combatPanel.transform);
-        combatButton.transform.GetComponentInChildren<TMP_Text>().text = desc;
-        combatButton.GetComponent<Button>().onClick.AddListener(() =>
-        {
-            action?.Invoke();
-        });
-    }
-    private void Heal()
-    {
-        HideCombatPanel();
-        if(battleState != BattleState.PLAYERTURN) return;
-        
-        _turnAction = true;
-        Debug.Log("(Healed)");
-    }
-    private void Attack()
-    {
-        HideCombatPanel();
-        if(battleState != BattleState.PLAYERTURN) return;
-        
-        _turnAction = true;
-        Debug.Log("(Attacked)");
+        // Do dokończenia
+        Debug.LogWarning("<color=green>----- Walka Wygrana! -----</color>");
+
     }
 }
 
