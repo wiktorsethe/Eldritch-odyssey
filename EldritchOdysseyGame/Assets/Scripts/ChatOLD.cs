@@ -40,15 +40,15 @@ public class ChatOLD : NetworkBehaviour
 
         if (string.IsNullOrWhiteSpace(message)) { return; }
 
-        CmdSendMessage(message);
+        CmdSendMessage(User.GetUsername(), message);
 
         inputField.text = string.Empty;
     }
 
     [Command]
-    private void CmdSendMessage(string message)
+    private void CmdSendMessage(string username, string message)
     {
-        RpcHandleMessage($"[{User.GetUsername()}]: {message}");
+        RpcHandleMessage($"[{username}]: {message}");
     }
 
     [ClientRpc]

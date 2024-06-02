@@ -4,7 +4,7 @@ const app = express();
 const port = 9999;
 
 const db = mysql.createConnection({
-    host: '54.38.52.204',
+    host: '127.0.0.1',
     user: 'ubuntu',
     password: '27rhN@Vj^Exf*e',
     database: 'eoDB'
@@ -15,12 +15,15 @@ db.connect((err) => {
     console.log('Połączono z bazą danych');
 });
 
+$username = $_POST["username"];
+$password = $_POST["password"];
+
 app.get('/getdata', (req, res) => {
-    let sql = 'SELECT username,password FROM Player LIMIT 1';
+    let sql = 'SELECT password FROM Player WHERE username = $username';
     db.query(sql, (err, result) => {
         if(err) throw err;
         console.log(result);
-        res.send(result[0]);
+        res.send(result);
     });
 });
 

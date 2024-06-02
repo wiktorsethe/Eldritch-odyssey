@@ -1,26 +1,48 @@
 <?php
-$conn = include('db_con.php');
+include('db_con.php');
 
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$sql = "SELECT password FROM Player WHERE username = '".$username."' ";
+$sql = "SELECT password, id FROM Player WHERE username = '".$username."' ";
 $result = $conn->query($sql);
 
 if($result->num_rows > 0) {
     while($row = $result->fetch_assoc()) {
         if($row['password'] == $password){
-            echo $username."|".$password;
+            $userId = $row['id'];
 
-            $sessionToken = bin2hex(random_bytes(16));
-            $insertQuery = "INSERT INTO active_sessions (user_id, session_token) VALUES (?, ?)";
-            $stmt = $conn->prepare($insertQuery);
-            $stmt->bind_param("is", $userId, $sessionToken);
+            $query = "SELECT * FROM active_sessions WHERE user_id = ".$userId." ";
+            $stmt = $conn->prepare($query);
             $stmt->execute();
+            $result2 = $stmt->get_result();
+            if ($result2->num_rows > 0) {
+                // User already logged in
+                echo "You are already logged in elsewhere.";
+                exit;
+            } else {
+                try {
+                    $sessionToken = bin2hex(random_bytes(16));
+                    echo $sessionToken;
+                } catch (\Random\RandomException $e) {
+                    echo 'catch';
+                }
 
+                $insertQuery = "INSERT INTO active_sessions (user_id, session_token) VALUES ($userId, '".$sessionToken."')";
+                if ($conn->query($insertQuery) === TRUE) {
+                    echo $userId."|".$username."|".$password;
+                } else {
+                    echo "Error: " . $insertQuery . "<br>" . $conn->error;
+                }
+                //$stmt2 = $conn->prepare($insertQuery);
+                //$stmt2->execute();
+            }
         } else {
             echo "password incorrect";
         }
     }
+}
+else {
+    echo "username incorrect";
 }
 ?>

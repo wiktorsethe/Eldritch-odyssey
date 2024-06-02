@@ -287,6 +287,7 @@ GameObject:
   - component: {fileID: 1137290896755844928}
   - component: {fileID: 2126339152726949182}
   - component: {fileID: 8325030845527203891}
+  - component: {fileID: 2909307424617236022}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -503,6 +504,21 @@ MonoBehaviour:
   chatUI: {fileID: 8273896247331534043}
   chatText: {fileID: 688686306784873115}
   inputField: {fileID: 112499599234819487}
+--- !u!114 &2909307424617236022
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4348486188877593939}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 59919a6df53804e359650d591a9b60fc, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  syncDirection: 0
+  syncMode: 0
+  syncInterval: 0
 --- !u!1 &4662860774834644259
 GameObject:
   m_ObjectHideFlags: 0
