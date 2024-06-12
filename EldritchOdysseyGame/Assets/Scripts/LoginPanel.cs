@@ -3,6 +3,7 @@ using System.Collections;
 using Mirror;
 using UnityEngine;
 using UnityEngine.Networking;
+using UnityEngine.Networking.Types;
 using UnityEngine.UI;
 using UnityEngine.SceneManagement;
 
@@ -13,8 +14,7 @@ public class LoginPanel : MonoBehaviour
     [SerializeField] private GameObject canvas;
     [SerializeField] private InputField loginField;
     [SerializeField] private InputField passwordField;
-    private User _user;
-    
+    public User user;
     public void Start()
     {
         Button btn = loginButton.GetComponent<Button>();
@@ -34,20 +34,20 @@ public class LoginPanel : MonoBehaviour
         WWW www = new WWW(serverUrl, form);
 
         yield return www;
-        
+
         string[] userData = www.text.Split('|');
         if (userData.Length == 3)
         {
-            User.SetUserId(Convert.ToInt32(userData[0]));
-            User.SetUsername(userData[1]);
-            User.SetPassword(userData[2]);
-            /*_user = new User
-            {
-                username = userData[0],
-                password = userData[1]
-            };*/
+            /*user.UserId = userData[0];
+            user.Username = userData[1];
+            user.Password = userData[2];*/
+
+            var ni = NetworkClient.connection.identity;
+            ni.GetComponent<User>().CmdSetUserId(userData[0]);
+            ni.GetComponent<User>().CmdSetUsername(userData[1]);
+            ni.GetComponent<User>().CmdSetPassword(userData[2]);
             
-            SceneManager.LoadSceneAsync("Main");
+            gameObject.SetActive(false);
         }
         else
         {

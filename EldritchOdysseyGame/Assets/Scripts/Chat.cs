@@ -1,21 +1,20 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.Networking;
 using Mirror;
 using TMPro;
 using System;
-public class ChatOLD : NetworkBehaviour
+public class Chat : NetworkBehaviour
 {
-    [SerializeField] private GameObject chatUI = null;
-    [SerializeField] private TMP_Text chatText = null;
-    [SerializeField] private TMP_InputField inputField = null;
+    [SerializeField] private TMP_Text chatText;
+    [SerializeField] private TMP_InputField inputField;
+    [SerializeField] private GameObject canvas;
 
     private static event Action<string> OnMessage;
 
     public override void OnStartAuthority()
     {
-        chatUI.SetActive(true);
+        canvas.SetActive(true);
 
         OnMessage += HandleNewMessage;
     }
@@ -24,37 +23,37 @@ public class ChatOLD : NetworkBehaviour
     private void OnDestroy()
     {
         if (!isLocalPlayer) { return; }
-
         OnMessage -= HandleNewMessage;
     }
 
     private void HandleNewMessage(string message)
     {
         chatText.text += message;
+
     }
 
-    [Client]
-    public void Send(string message)
+    public void Send()
     {
         if (!Input.GetKeyDown(KeyCode.Return)) { return; }
-
-        if (string.IsNullOrWhiteSpace(message)) { return; }
-
-        CmdSendMessage(User.GetUsername(), message);
-
+        if (string.IsNullOrWhiteSpace(inputField.text)) { return; }
+        
+        var ni = NetworkClient.connection.identity;
+        string prettymessage = $"[{ni.GetComponent<User>().username}]: {inputField.text}";
+        CmdSendMessage(prettymessage);
         inputField.text = string.Empty;
     }
 
-    [Command]
-    private void CmdSendMessage(string username, string message)
+    [Command(requiresAuthority = false)]
+    private void CmdSendMessage(string message)
     {
-        RpcHandleMessage($"[{username}]: {message}");
+        RpcHandleMessage(message);
     }
 
     [ClientRpc]
     private void RpcHandleMessage(string message)
     {
+
         OnMessage?.Invoke($"\n{message}");
     }
+    
 }
-

@@ -1,38 +1,58 @@
-using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class User : MonoBehaviour
+using Mirror;
+public class User : NetworkBehaviour
 {
-    private static int _userId;
-    private static string _username;
-    private static string _password;
+    [SyncVar (hook = nameof(HandleDisplayColorChange))] [SerializeField] private Color displayColor;
+    [SerializeField] private SpriteRenderer userSprite;
 
-    public static void SetUserId(int userid)
-    {
-        _userId = userid;
-    }
-    public static int GetUserId()
-    {
-        return _userId;
-    }
-    public static void SetUsername(string username)
-    {
-        _username = username;
-    }
+    [SyncVar (hook = nameof(OnUserIdChanged))] [SerializeField] private string userIdSyncVar;
+    public string userId;
+    [SyncVar (hook = nameof(OnUsernameChanged))] [SerializeField] private string usernameSyncVar;
+    public string username;
+    [SyncVar (hook = nameof(OnPasswordChanged))] [SerializeField] private string passwordSyncVar;
+    public string password;
 
-    public static string GetUsername()
+    [Server]
+    public void SetDisplayColor(Color newColor)
     {
-        return _username;
-    }
-    public static void SetPassword(string password)
-    {
-        _password = password;
+        displayColor = newColor;
     }
 
-    public static string GetPassword()
+    private void HandleDisplayColorChange(Color oldColor, Color newColor)
     {
-        return _password;
+        userSprite.color = newColor;
+    }
+    
+    [Command]
+    public void CmdSetUserId(string userId)
+    {
+        userIdSyncVar = userId;
+    }
+    private void OnUserIdChanged(string oldUserId, string newUserid)
+    {
+        userId = newUserid;
+    }
+    
+    [Command]
+    public void CmdSetUsername(string username)
+    {
+        usernameSyncVar = username;
+    }
+    private void OnUsernameChanged(string oldUsername, string newUsername)
+    {
+        username = newUsername;
+    }
+    
+    [Command]
+    public void CmdSetPassword(string password)
+    {
+        passwordSyncVar = password;
+    }
+    private void OnPasswordChanged(string oldPassword, string newPassword)
+    {
+        password = newPassword;
     }
 }
+

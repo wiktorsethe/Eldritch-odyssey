@@ -34,8 +34,6 @@ if($result->num_rows > 0) {
                 } else {
                     echo "Error: " . $insertQuery . "<br>" . $conn->error;
                 }
-                //$stmt2 = $conn->prepare($insertQuery);
-                //$stmt2->execute();
             }
         } else {
             echo "password incorrect";
