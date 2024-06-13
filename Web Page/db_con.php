@@ -6,7 +6,5 @@ $database = 'eoDB';
 
 if (!$conn = mysqli_connect($host, $username, $password, $database)) {
     die("Błąd połączenia: " . mysqli_connect_error());
-} else {
-    echo "Połączono z bazą danych.";
 }
 ?>

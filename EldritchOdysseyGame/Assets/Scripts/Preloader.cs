@@ -12,8 +12,4 @@ public class Preloader : MonoBehaviour
             NetworkManager.singleton.StartClient();
         }
     }
-    public void StartClient()
-    {
-        NetworkManager.singleton.StartClient();
-    }
 }

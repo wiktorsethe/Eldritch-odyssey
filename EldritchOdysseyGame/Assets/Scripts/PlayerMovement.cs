@@ -22,22 +22,4 @@ public class PlayerMovement : NetworkBehaviour
         rb.velocity = direction * speed;
 
     }
-
-    /*
-    public float moveSpeed = 5f;
-
-    void Update()
-    {
-        // Get input values
-        float horizontalInput = Input.GetAxis("Horizontal");
-        float verticalInput = Input.GetAxis("Vertical");
-
-        // Calculate movement vector
-        Vector3 movement = new Vector3(horizontalInput, verticalInput, 0f);
-        movement.Normalize(); // Normalize to ensure consistent speed in all directions
-
-        // Move the player
-        transform.position += movement * moveSpeed * Time.deltaTime;
-    }
-    */
 }
