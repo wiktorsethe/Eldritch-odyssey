@@ -1,7 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using Mirror;
+
 public class CameraMovement : NetworkBehaviour
 {
     private Camera cam;
@@ -14,6 +16,7 @@ public class CameraMovement : NetworkBehaviour
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;
+        if (SceneManager.GetActiveScene().name == "Login") enabled = false; // do poprawki
         Vector3 desiredPosition = transform.position + offset;
         Vector3 smoothedPosition = Vector3.Lerp(cam.transform.position, desiredPosition, smoothSpeed);
         cam.transform.position = smoothedPosition;

@@ -4,8 +4,9 @@ using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using Mirror;
 
-public class SceneChanger : MonoBehaviour
+public class SceneChanger : NetworkBehaviour
 {
     [HideInInspector] public string sceneName;
     private bool _isSceneChanged = true;
@@ -25,7 +26,7 @@ public class SceneChanger : MonoBehaviour
         if (other.collider.CompareTag("Player") && !_isSceneChanged)
         {
             PlayerPrefs.SetString("PrevScene", SceneManager.GetActiveScene().name);
-            SceneManager.LoadSceneAsync(sceneName);
+            ChangeScene();
         }
     }
 
@@ -34,6 +35,15 @@ public class SceneChanger : MonoBehaviour
         if (other.collider.CompareTag("Player") && _isSceneChanged)
         {
             _isSceneChanged = false;
+        }
+    }
+    
+    [Client]
+    private void ChangeScene()
+    {
+        if (isLocalPlayer)
+        {
+            SceneManager.LoadSceneAsync(sceneName);
         }
     }
 }

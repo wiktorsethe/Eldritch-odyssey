@@ -10,10 +10,19 @@ public class PlayerMovement : NetworkBehaviour
 
     private void Awake()
     {
-        DontDestroyOnLoad(gameObject);
+        //DontDestroyOnLoad(gameObject);
         rb = GetComponent<Rigidbody2D>();
     }
 
+    public override void OnStartLocalPlayer()
+    {
+        if (Camera.main != null)
+        {
+            Camera.main.transform.SetParent(transform);
+            Camera.main.transform.localPosition = new Vector3(0, 0, 0);
+        }
+    }
+    
     private void FixedUpdate()
     {
         if (!isLocalPlayer) return;

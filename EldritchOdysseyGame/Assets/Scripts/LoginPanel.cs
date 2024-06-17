@@ -14,7 +14,7 @@ public class LoginPanel : MonoBehaviour
     [SerializeField] private GameObject canvas;
     [SerializeField] private InputField loginField;
     [SerializeField] private InputField passwordField;
-    public User user;
+    [SerializeField] private GameObject selectCharacterMenu;
     public void Start()
     {
         Button btn = loginButton.GetComponent<Button>();
@@ -38,16 +38,13 @@ public class LoginPanel : MonoBehaviour
         string[] userData = www.text.Split('|');
         if (userData.Length == 3)
         {
-            /*user.UserId = userData[0];
-            user.Username = userData[1];
-            user.Password = userData[2];*/
-
             var ni = NetworkClient.connection.identity;
             ni.GetComponent<User>().CmdSetUserId(userData[0]);
             ni.GetComponent<User>().CmdSetUsername(userData[1]);
             ni.GetComponent<User>().CmdSetPassword(userData[2]);
             
             gameObject.SetActive(false);
+            selectCharacterMenu.GetComponent<SelectCharacterPanel>().SelectCharacters(userData[0]);
         }
         else
         {
