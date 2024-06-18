@@ -15,5 +15,11 @@ public class CustomNM : NetworkManager
         user.SetDisplayColor(new Color(Random.Range(0f, 1f), Random.Range(0f, 1f), Random.Range(0f, 1f), 1f));
         
     }
-    
+    public override void OnServerDisconnect(NetworkConnectionToClient conn)
+    {
+        User user = conn.identity.GetComponent<User>();
+        Logout.SendLogout(user.userId);
+        
+        base.OnServerDisconnect(conn);
+    }
 }
