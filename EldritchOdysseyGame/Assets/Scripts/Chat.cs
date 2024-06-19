@@ -38,7 +38,7 @@ public class Chat : NetworkBehaviour
         if (string.IsNullOrWhiteSpace(inputField.text)) { return; }
         
         var ni = NetworkClient.connection.identity;
-        string prettymessage = $"[{ni.GetComponent<User>().username}]: {inputField.text}";
+        string prettymessage = $"[{ni.GetComponent<User>().nickname}]: {inputField.text}";
         CmdSendMessage(prettymessage);
         inputField.text = string.Empty;
     }

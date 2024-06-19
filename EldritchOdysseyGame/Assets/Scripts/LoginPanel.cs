@@ -21,7 +21,7 @@ public class LoginPanel : MonoBehaviour
         btn.onClick.AddListener(LoginOnClick);
     }
 
-    public void LoginOnClick()
+    private void LoginOnClick()
     {
         StartCoroutine(LoginDB(loginField.text, passwordField.text));
     }
@@ -40,7 +40,7 @@ public class LoginPanel : MonoBehaviour
         {
             var ni = NetworkClient.connection.identity;
             ni.GetComponent<User>().CmdSetUserId(userData[0]);
-            ni.GetComponent<User>().CmdSetUsername(userData[1]);
+            ni.GetComponent<User>().CmdSetLogin(userData[1]);
             ni.GetComponent<User>().CmdSetPassword(userData[2]);
             
             gameObject.SetActive(false);

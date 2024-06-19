@@ -2,18 +2,48 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
+using Mirror;
 using TMPro;
 
 public class SelectCharacterPanel : MonoBehaviour
 {
-    private string serverUrl = "http://54.38.52.204/getcharacters.php";
-    [SerializeField] private GameObject characterPrefab;
-
-    public void SelectCharacters(string id)
+    [System.Serializable]
+    public class Character
     {
-        StartCoroutine(GetUserCharacters(id));
+        public string nickname;
+        public string gender;
+
+        public Character(string nickname, string gender)
+        {
+            this.nickname = nickname;
+            this.gender = gender;
+        }
     }
     
+    public List<Character> Characters = new List<Character>();
+    
+    private string serverUrl = "http://54.38.52.204/getcharacters.php";
+    [SerializeField] private GameObject characterPrefab;
+    [SerializeField] private GameObject createCharacterPanel;
+    [SerializeField] private List<GameObject> listOfCharacterObjects;
+    public void SelectCharacters(string id)
+    {
+        DestroyChildren();
+        StartCoroutine(GetUserCharacters(id));
+    }
+
+    private void DestroyChildren()
+    {
+        if (listOfCharacterObjects.Count > 0)
+        {
+            foreach (GameObject child in listOfCharacterObjects)
+            {
+                Destroy(child);
+            }
+            listOfCharacterObjects.Clear();
+        }
+    }
     IEnumerator GetUserCharacters(string userId)
     {
         WWWForm form = new WWWForm();
@@ -35,12 +65,41 @@ public class SelectCharacterPanel : MonoBehaviour
                 }
             }
         }
-        //string[] userData = www.text.Split('|');
     }
 
-    private void ShowCharacter(string username, string gender)
+    private void ShowCharacter(string nickname, string gender)
     {
         GameObject character = Instantiate(characterPrefab, transform.Find("List"));
-        character.GetComponentInChildren<TMP_Text>().text = username + " [" + gender + "]";
+        character.GetComponentInChildren<TMP_Text>().text = nickname + " [" + gender + "]";
+        
+        Character newCharacter = new Character(nickname, gender);
+        Characters.Add(newCharacter);
+
+        Button button = character.GetComponentInChildren<Button>();
+        if (button != null)
+        {
+            int index = Characters.Count - 1;
+            button.onClick.AddListener(() => ChoiceOfCharacter(index));
+        }
+        
+        listOfCharacterObjects.Add(character);
+    }
+
+    private void ChoiceOfCharacter(int index)
+    {
+        if (index >= 0 && index < Characters.Count)
+        {
+            Character selectedCharacter = Characters[index];
+            var ni = NetworkClient.connection.identity;
+            ni.GetComponent<User>().CmdSetNickname(selectedCharacter.nickname);
+            ni.GetComponent<User>().CmdSetGender(selectedCharacter.gender);
+            Debug.Log("Selected Character: " + selectedCharacter.nickname + " [" + selectedCharacter.gender + "]");
+        }
+    }
+
+    public void ShowCreateCharacterPanel()
+    {
+        gameObject.SetActive(false);
+        createCharacterPanel.SetActive(true);
     }
 }

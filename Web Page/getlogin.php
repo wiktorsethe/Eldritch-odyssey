@@ -4,7 +4,7 @@ include('db_con.php');
 $username = $_POST["username"];
 $password = $_POST["password"];
 
-$sql = "SELECT password, id FROM Player WHERE username = '".$username."' ";
+$sql = "SELECT password, id FROM `Player` WHERE username = '".$username."' ";
 $result = $conn->query($sql);
 
 if($result->num_rows > 0) {
